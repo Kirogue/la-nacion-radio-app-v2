@@ -11,6 +11,9 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+# Carpetas externas / Ejemplos
+App de ejemplo/
+
 # Android
 android/app/google-services.json
 android/.gradle
