@@ -1,0 +1,50 @@
+name: Deploy PWA to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.24.5' # Ajusta a tu versión actual si es necesario
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      - name: 🏗️ Build Web App
+        run: flutter build web --release --web-renderer html
+
+      # --- DESPLIEGUE (Descomentar y configurar Secrets en GitHub) ---
+      
+      # Opción 1: Firebase Hosting (Recomendado para PWAs)
+      # - name: 🔥 Deploy to Firebase
+      #   uses: FirebaseExtended/action-hosting-deploy@v0
+      #   with:
+      #     repoToken: '${{ secrets.GITHUB_TOKEN }}'
+      #     firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+      #     channelId: live
+      #     projectId: tu-proyecto-firebase
+
+      # Opción 2: FTP a Hostinger (Clásico)
+      # - name: 📂 Upload to Hostinger (FTP)
+      #   uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      #   with:
+      #     server: ${{ secrets.FTP_SERVER }}       # ej: ftp.hostinger.com
+      #     username: ${{ secrets.FTP_USERNAME }}
+      #     password: ${{ secrets.FTP_PASSWORD }}
+      #     local-dir: build/web/
+      #     server-dir: /public_html/app/           # Carpeta destino en tu hosting
+
+
