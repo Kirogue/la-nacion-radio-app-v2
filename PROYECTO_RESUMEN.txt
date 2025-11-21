@@ -1,0 +1,84 @@
+# La Nación Radio Mobile App - Documentación Técnica y Resumen del Proyecto
+
+## 📌 Visión General
+Aplicación móvil desarrollada en Flutter para "La Nación Radio", la plataforma de radio y podcast de La Nación (Venezuela). Integra transmisión en vivo, podcasts, feed de noticias, directorio de empresas, Reels de Instagram y YouTube, todo gestionado desde un backend centralizado en WordPress.
+
+---
+
+## 🛠️ Stack Tecnológico
+
+*   **Frontend:** Flutter (Dart) - Soporte Multiplataforma (Android, iOS, Web/PWA).
+*   **Backend:** WordPress con Plugin personalizado (`La Nación Radio Core`) y API REST.
+*   **Servicios Cloud:** Firebase (Analytics, Messaging, Core).
+*   **APIs Externas:** YouTube Data API, Instagram Graph API.
+*   **CI/CD:** GitHub Actions para despliegue automático de versión Web.
+
+---
+
+## 📂 Estructura del Proyecto
+
+### 1. Directorios Clave
+*   `lib/`: Código fuente de la aplicación Flutter.
+    *   `dashboard/`: Lógica principal (Controladores, Modelos, Vistas).
+    *   `widgets/`: Componentes reutilizables de UI (Tarjetas, Reproductores, Navegación).
+    *   `config/`: Constantes, temas y estilos globales.
+*   `backend-plugin/`: Código fuente del plugin maestro para WordPress.
+*   `.github/workflows/`: Configuración de GitHub Actions para despliegue automático.
+*   `android/` & `ios/`: Configuración nativa por plataforma.
+
+### 2. Plugins y Funcionalidades Principales
+*   `audio_service` & `just_audio`: Manejo de audio en segundo plano y streaming.
+*   `firebase_core`, `_messaging`, `_analytics`: Notificaciones y métricas.
+*   `provider`: Gestión de estado.
+*   `webview_flutter`: Visualización de noticias dentro de la app.
+*   `cached_network_image`: Optimización de carga de imágenes.
+
+---
+
+## 🚀 Funcionalidades Implementadas
+
+### A. Experiencia de Usuario (Frontend)
+1.  **Radio & Podcast:**
+    *   Streaming en vivo 24/7.
+    *   Reproductor de podcasts con lista de episodios.
+    *   **Audio Pre-roll:** Sistema de inyección de publicidad antes de iniciar el stream.
+    *   Mini-reproductor persistente en toda la navegación.
+2.  **Noticias:**
+    *   Feed visual con tarjetas estilo "Glassmorphism".
+    *   Lectura de artículos integrada sin salir de la app.
+3.  **Directorio de Empresas:**
+    *   Listado categorizado.
+    *   Detalle de empresa con botones de acción rápida (WhatsApp, Web, Instagram).
+4.  **Multimedia:**
+    *   Sección de Reels (formato vertical).
+    *   Integración de videos de YouTube.
+
+### B. Gestión de Contenido (Backend WordPress)
+El plugin `backend-plugin/la-nacion-radio-core` habilita:
+*   **Custom Post Types:** "Programas", "Empresas", "Publicidad".
+*   **API REST Personalizada:** Endpoints optimizados (`/wp-json/api/...`) para alimentar la app.
+
+---
+
+## ⚙️ Configuración y Despliegue
+
+### Requisitos Previos
+*   Flutter SDK Stable.
+*   Cuenta de Firebase (para `google-services.json`).
+*   Sitio WordPress con el plugin `La Nación Radio Core` instalado.
+
+### Comandos Útiles
+*   **Ejecutar (Móvil):** `flutter run`
+*   **Ejecutar (Web):** `flutter run -d chrome`
+*   **Compilar APK:** `flutter build apk --release`
+*   **Compilar Web:** `flutter build web --release --web-renderer html`
+
+### Despliegue Web Automático
+Configurado vía GitHub Actions. Al hacer push a `main`, el sistema compila la versión web y la sube al servidor configurado (FTP o Firebase Hosting) definido en los "Secrets" del repositorio.
+
+---
+
+## 📝 Notas de Desarrollo
+*   **Git:** El repositorio ignora `node_modules` y carpetas de compilación (`build/`).
+*   **UI:** Se ha implementado un diseño moderno con énfasis en la legibilidad y componentes táctiles grandes.
+*   **Monetización:** Preparada para Audio Ads y Banners visuales gestionados desde el backend.
