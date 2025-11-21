@@ -60,25 +60,77 @@ El plugin `backend-plugin/la-nacion-radio-core` habilita:
 
 ---
 
+## 💾 Estructura de Datos (WordPress + ACF)
+
+Para que la app funcione correctamente, el backend debe tener configurados los siguientes campos personalizados (ACF) asociados a los Post Types creados por el plugin:
+
+### 1. Programas (`lnr_program`)
+*   `podcast_audio_url` (URL): Enlace directo al archivo MP3 o stream.
+*   `podcast_description` (Text Area): Breve descripción para el reproductor.
+*   `podcast_image` (Image): Portada cuadrada del programa/episodio.
+*   `program_schedule` (Text): Horario de emisión (ej: "Lunes a Viernes 8 AM").
+*   `program_announcers` (Repeater/Text): Nombres de los locutores.
+
+### 2. Empresas (`lnr_company`)
+*   `company_field` (Select/Text): Categoría del negocio (ej: "Restaurante", "Salud").
+*   `company_image` (Image): Logo o foto del local.
+*   `company_priority` (Boolean/TrueFalse): Si es `true`, aparece en destacados.
+*   **Grupo `company_urls`:**
+    *   `company_url_web` (URL): Sitio web oficial.
+    *   `company_url_whatsapp` (URL): Link `wa.me/...` o número.
+    *   `company_url_instagram` (URL): Link al perfil o usuario.
+*   **Grupo `company_schedule` (Repeater):**
+    *   `company_schedule_days`: Días (ej: "Lunes - Viernes").
+    *   `company_schedule_time_start`: Hora apertura.
+    *   `company_schedule_time_end`: Hora cierre.
+
+### 3. Publicidad (`lnr_ad`)
+*   `ad_image` (Image): Banner visual.
+*   `ad_url` (URL): Destino al hacer clic.
+*   `ad_audio_url` (URL): (Opcional) Archivo de audio para anuncios pre-roll.
+*   `ad_position` (Select): Dónde se muestra (Home, Player, News).
+
+---
+
+## 🎨 Design System & Assets
+
+*   **Colores:**
+    *   Primario: `#004899` (Azul Corporativo La Nación).
+    *   Fondo: `#121212` (Dark Theme base).
+    *   Superficies: Glassmorphism (Negro con transparencia y blur).
+*   **Tipografía:**
+    *   Títulos: `Montserrat` (Bold/ExtraBold).
+    *   Cuerpo: `Poppins` (Regular/Medium).
+*   **Iconos:** SVGs ubicados en `assets/icons/`.
+
+---
+
 ## ⚙️ Configuración y Despliegue
 
 ### Requisitos Previos
 *   Flutter SDK Stable.
 *   Cuenta de Firebase (para `google-services.json`).
-*   Sitio WordPress con el plugin `La Nación Radio Core` instalado.
+*   Sitio WordPress con el plugin `La Nación Radio Core` instalado y ACF Pro activo.
 
 ### Comandos Útiles
 *   **Ejecutar (Móvil):** `flutter run`
 *   **Ejecutar (Web):** `flutter run -d chrome`
 *   **Compilar APK:** `flutter build apk --release`
-*   **Compilar Web:** `flutter build web --release --web-renderer html`
+*   **Compilar Web:** `flutter build web --release`
 
 ### Despliegue Web Automático
 Configurado vía GitHub Actions. Al hacer push a `main`, el sistema compila la versión web y la sube al servidor configurado (FTP o Firebase Hosting) definido en los "Secrets" del repositorio.
 
 ---
 
-## 📝 Notas de Desarrollo
-*   **Git:** El repositorio ignora `node_modules` y carpetas de compilación (`build/`).
-*   **UI:** Se ha implementado un diseño moderno con énfasis en la legibilidad y componentes táctiles grandes.
-*   **Monetización:** Preparada para Audio Ads y Banners visuales gestionados desde el backend.
+## 🔮 Roadmap Técnico (Futuro)
+
+1.  **Modo Offline:**
+    *   Implementar base de datos local (`Hive` o `Isar`) para cachear noticias y estructura del directorio.
+    *   Gestor de descargas (`dio` + `path_provider`) para guardar episodios de podcast y escucharlos sin conexión.
+2.  **Búsqueda Global:**
+    *   Crear un índice unificado que permita buscar noticias, empresas y podcasts desde una sola barra de búsqueda.
+3.  **Notificaciones Segmentadas:**
+    *   Usar "Topics" de Firebase para que el usuario se suscriba solo a lo que le interesa (ej: "Deportes", "Sucesos", "Radio en Vivo").
+4.  **Login de Usuarios:**
+    *   Implementar autenticación para permitir "Favoritos" y sincronización entre dispositivos.
